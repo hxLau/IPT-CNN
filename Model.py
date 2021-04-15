@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+
 class CNN_5D(nn.Module):
     '''
     The input Image size is batchsize*1*32*15
@@ -21,6 +22,7 @@ class CNN_5D(nn.Module):
         x = self.cnn_block2(x)
         x = x.view(x.size(0), -1)
         x = self.linear(x)
+        x = F.softmax(x)
         return x
 
 
@@ -37,7 +39,7 @@ class CNN_20D(nn.Module):
         self.cnn_block3 = CNN_Block(in_channels=128, out_channels=256, kernel_size=[5, 3]
                                     , pooling_size=[2, 1], negative_slope=0.01)
         self.linear = nn.Linear(
-            in_features=122880, out_features=2)
+            in_features=107520, out_features=2)
 
     def forward(self, x):
         x = self.cnn_block1(x)
@@ -45,6 +47,7 @@ class CNN_20D(nn.Module):
         x = self.cnn_block3(x)
         x = x.view(x.size(0), -1)
         x = self.linear(x)
+        # x = F.softmax(x)
         return x
 
 
